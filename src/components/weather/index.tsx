@@ -54,6 +54,8 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
                     xAxis: {
                         name: 'Temperature °C',
                         categories: dates,
+                        tickLength: 0
+
                     },
                     series: [
                         {
@@ -61,8 +63,16 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
                             name: 'Time Zone',
                             color: '#fff2ce',
                             lineColor: '#ffcf3c',
+
                         },
                     ],
+                    yAxis: {
+                        gridLineWidth: 0,
+                        minorGridLineWidth: 0,
+                        tickLength: 0,
+                        visible: false
+
+                    }
                 };
 
                 setConfig(config);
