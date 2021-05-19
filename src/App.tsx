@@ -1,25 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
+import { IRouteInterface } from './interfaces'
 import './App.css';
 
-function App() {
+const Weather = React.lazy(() => import('./components/weather'));
+
+function App(props: any) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <React.Suspense fallback={'Loading...'}>
+        <Switch>
+          <Route<IRouteInterface>
+            exact
+            path="/"
+            name='Todo App'
+            render={(props: any) => <Weather {...props} />}
+          />
+        </Switch>
+      </React.Suspense>
+    </BrowserRouter>
   );
 }
 
