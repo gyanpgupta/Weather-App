@@ -1,12 +1,15 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent } from 'react';
+import { Card, CardBody, CardTitle } from 'reactstrap';
 
-import { WeatherProps } from '../../interfaces'
-
-
+import { WeatherProps } from '../../interfaces';
 
 const WeatherForm: FunctionComponent<WeatherProps> = (props) => {
-    return (<div>Weather App</div>)
-}
-
+    return (
+        <Card>
+            <CardTitle className='text-center'>Weather App</CardTitle>
+            <CardBody></CardBody>
+        </Card>
+    );
+};
 
 export default WeatherForm;
