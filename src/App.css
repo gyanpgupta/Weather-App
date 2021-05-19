@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.mr-2 {
+  margin-right: 12px;
+}
+
+.inactive {
+  color: transparent;
+  text-shadow: 0 0 0px rgb(0 0 0 / 50%);
+}
+.cursor-pointer {
+  cursor: pointer;
+}
