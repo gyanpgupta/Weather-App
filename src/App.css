@@ -37,14 +37,192 @@
   }
 }
 
+body {
+  margin: 0;
+  background: #fff;
+  color: #202124;
+}
+
 .mr-2 {
   margin-right: 12px;
 }
 
 .inactive {
-  color: transparent;
-  text-shadow: 0 0 0px rgb(0 0 0 / 50%);
+  color: #70757a !important;
 }
+
 .cursor-pointer {
   cursor: pointer;
+}
+
+.ml-2 {
+  margin-left: 9px;
+}
+
+.temperature-text {
+  line-height: 60px;
+  vertical-align: top;
+  font-size: 48px;
+  color: #222;
+  font-family: Google Sans, arial, sans-serif !important;
+}
+
+.headline {
+  font-size: 14px;
+  line-height: 1.58;
+}
+
+.headline-active {
+  border-bottom: 3px solid #fbbc04;
+  cursor: default;
+  padding-bottom: 4px;
+}
+
+.temperature-unit {
+  line-height: 24px;
+  color: #222;
+  font-size: 16px;
+}
+
+.other-stats {
+  color: #70757a;
+  display: inline-block;
+  font-size: 12px;
+  line-height: 16px;
+  padding-left: 9px;
+  padding-top: 6px;
+}
+
+.location-wrap {
+  font-size: 22px;
+  line-height: 26px;
+}
+
+.location-date {
+  color: #70757a;
+  font-size: 16px;
+  line-height: 20px;
+}
+.location-icon {
+  color: #70757a;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.weekly-wrap {
+  transform: translate3d(0px, 0px, 0px);
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.weekly-item {
+  border-radius: 10px;
+  -webkit-transition-duration: 200ms, 200ms, 200ms;
+  -webkit-transition-property: background-image, border, font-weight;
+  display: inline-block;
+  height: 90px;
+  line-height: 1;
+  text-align: center;
+}
+
+.weekly-item:first-child {
+  background-color: #f8f9fa;
+}
+
+.weekly-item-text {
+  color: #bababa;
+}
+
+.weekly-item-temperature {
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 15px;
+  justify-content: center;
+}
+.weekly-item-temperature-day {
+  color: #878787 !important;
+}
+
+.weekly-item-temperature-night {
+  color: #bababa !important;
+  margin-left: 5px;
+}
+
+@media only screen and (max-width: 600px) {
+  .weekly-wrap {
+    font-size: 10px;
+  }
+  .weekly-wrap img {
+    font-size: 10px;
+    width: 35px;
+    height: 35px;
+  }
+
+  .temperature-text {
+    line-height: 50px;
+    font-size: 22px;
+  }
+  .temperature-unit {
+    line-height: 18px;
+    font-size: 12px;
+  }
+
+  .other-stats {
+    font-size: 10px;
+    line-height: 14px;
+  }
+
+  .location-wrap {
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+  .location-date {
+    font-size: 12px;
+    line-height: 16px;
+  }
+  .location-icon {
+    font-size: 12px;
+    line-height: 16px;
+  }
+  .headline {
+    font-size: 9px;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  .temperature-text {
+    line-height: 50px;
+    font-size: 22px;
+  }
+  .temperature-unit {
+    line-height: 18px;
+    font-size: 12px;
+  }
+
+  .other-stats {
+    font-size: 10px;
+    line-height: 14px;
+  }
+
+  .location-wrap {
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+  .location-date {
+    font-size: 12px;
+    line-height: 16px;
+  }
+  .location-icon {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .other-stats {
+    margin-left: -60px;
+  }
 }
