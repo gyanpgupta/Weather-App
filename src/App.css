@@ -222,7 +222,11 @@ body {
 }
 
 @media only screen and (min-width: 1200px) {
-  .other-stats {
-    margin-left: -60px;
+  .card {
+    width: 65%;
   }
+}
+
+.card {
+  margin: 0 auto;
 }

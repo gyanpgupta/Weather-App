@@ -22,23 +22,23 @@ const WeatherForm: FunctionComponent<WeatherFormProps> = ({
 					<Row>
 						<Col md={3} sm={4} lg={3} xs={12}>
 							<>
-								<div className="d-flex flex-row">
-									<span className="mr-2">
+								<div className='d-flex flex-row'>
+									<span className='mr-2'>
 										<img
-											typeof="foaf:Image"
-											className="img-responsive"
+											typeof='foaf:Image'
+											className='img-responsive'
 											src={`https://developer.accuweather.com/sites/default/files/${weatherData && weatherData[0].WeatherIcon > 10
-												? weatherData[0].WeatherIcon
-												: '0' + weatherData[0].WeatherIcon
+													? weatherData[0].WeatherIcon
+													: '0' + weatherData[0].WeatherIcon
 												}-s.png`}
-											width="75"
-											height="45"
-											alt="Mostly Cloudy"
-											title="Mostly Cloudy"
+											width='75'
+											height='45'
+											alt='Mostly Cloudy'
+											title='Mostly Cloudy'
 										></img>
 									</span>
 
-									<span className="mr-2 temperature-text">
+									<span className='mr-2 temperature-text'>
 										{temperatureUnit === 'F'
 											? weatherData[0].Temperature.Value
 											: Math.floor(
@@ -53,7 +53,7 @@ const WeatherForm: FunctionComponent<WeatherFormProps> = ({
 									>
 										{`°${weatherData[0].Temperature.Unit}`}
 									</span>
-									<span className="mr-2">| </span>
+									<span className='mr-2'>| </span>
 
 									<span
 										className={` cursor-pointer temperature-unit ${temperatureUnit === 'C' ? null : 'inactive'
@@ -66,10 +66,10 @@ const WeatherForm: FunctionComponent<WeatherFormProps> = ({
 							</>
 						</Col>
 						<Col md={3} sm={4} lg={3} xs={12}>
-							<div className="d-flex flex-column  other-stats">
+							<div className='d-flex flex-column  other-stats'>
 								<span>
 									Precipitation: {weatherData[0].PrecipitationProbability} %
-                    </span>
+                </span>
 								<span>Humidity: {weatherData[0].RelativeHumidity}%</span>
 								<span>
 									Wind: {weatherData[0].Wind.Speed.Value}{' '}
@@ -79,20 +79,20 @@ const WeatherForm: FunctionComponent<WeatherFormProps> = ({
 						</Col>
 
 						<Col md={6} sm={12} lg={6}>
-							<div className="d-flex flex-column align-items-end location-wrap">
-								<span className="mr-2">Los Angeles CA</span>
+							<div className='d-flex flex-column align-items-end location-wrap'>
+								<span className='mr-2'>Los Angeles CA</span>
 
-								<span className="mr-2 location-date">
+								<span className='mr-2 location-date'>
 									{moment(weatherData[0].DateTime).format('LLLL')}
 								</span>
 
-								<span className="mr-2 location-icon">
+								<span className='mr-2 location-icon'>
 									{weatherData[0].IconPhrase}
 								</span>
 							</div>
 						</Col>
 						<Col md={12} sm={12} lg={12}>
-							<div className="d-flex flex-row cursor-pointer headline">
+							<div className='d-flex flex-row cursor-pointer headline'>
 								<span
 									className={`mr-2 ${headerSelected === 'T' ? 'headline-active' : null
 										}`}
@@ -119,28 +119,28 @@ const WeatherForm: FunctionComponent<WeatherFormProps> = ({
 						</Col>
 
 						<Col md={12} sm={12} lg={12}>
-							<ul className="d-flex flex-row justify-content-around weekly-wrap">
+							<ul className='d-flex flex-row justify-content-around weekly-wrap'>
 								{weekData && weekData.length > 0
 									? weekData.map((item: weekDataProps, key: number) => {
 										return (
-											<li key={key} className="list-unstyled weekly-item">
-												<div className="d-flex flex-column weekly-item-text">
+											<li key={key} className='list-unstyled weekly-item'>
+												<div className='d-flex flex-column weekly-item-text'>
 													<span>{item.name}</span>
-													<span className="mt-1">
+													<span className='mt-1'>
 														<img
-															typeof="foaf:Image"
-															className="img-responsive"
+															typeof='foaf:Image'
+															className='img-responsive'
 															src={`https://developer.accuweather.com/sites/default/files/${item.icon > 10 ? item.icon : '0' + item.icon
 																}-s.png`}
-															width="75"
-															height="45"
-															alt="Mostly Cloudy"
+															width='75'
+															height='45'
+															alt='Mostly Cloudy'
 															title={item.iconPhrase}
 														></img>
 													</span>
 
-													<span className="mt-1 d-flex weekly-item-temperature">
-														<p className="weekly-item-temperature-day">
+													<span className='mt-1 d-flex weekly-item-temperature'>
+														<p className='weekly-item-temperature-day'>
 															{temperatureUnit === 'F'
 																? item.temperature.maximum
 																: Math.floor(
@@ -149,7 +149,7 @@ const WeatherForm: FunctionComponent<WeatherFormProps> = ({
                                 °
                               </p>
 
-														<p className="weekly-item-temperature-night">
+														<p className='weekly-item-temperature-night'>
 															{temperatureUnit === 'F'
 																? item.temperature.minimum
 																: Math.floor(
