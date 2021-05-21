@@ -2,21 +2,77 @@ import { FunctionComponent } from 'react';
 import { Card, CardBody, Col, Row } from 'reactstrap';
 import Skeleton from 'react-loading-skeleton';
 import moment from 'moment';
+import Slider from 'react-slick';
 
 import { WeatherFormProps, weekDataProps } from '../../interfaces';
 
 const ReactHighcharts = require('react-highcharts');
 
+function SampleNextArrow(props: any) {
+  const { className, style, onClick } = props;
+  return (
+    <span
+      className={
+        'slick-arrow-right fa fa-chevron-right float-right cursor-pointer'
+      }
+      onClick={onClick}
+      style={{ ...style, display: 'block' }}
+    />
+  );
+}
+
+function SamplePrevArrow(props: any) {
+  const { className, style, onClick } = props;
+  return (
+    <span
+      className={'slick-arrow-left fa fa-chevron-left cursor-pointer'}
+      onClick={onClick}
+      style={{ ...style, display: 'block' }}
+    />
+  );
+}
+
+const settings: any = {
+  dots: false,
+  draggable: false,
+  infinite: true,
+  nextArrow: <SampleNextArrow />,
+  prevArrow: <SamplePrevArrow />,
+  pauseOnHover: true,
+  slidesToScroll: 1,
+  slidesToShow: 5,
+  speed: 500,
+  touchMove: false,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 5,
+        slidesToScroll: 2,
+        adaptiveHeight: true,
+      },
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 4,
+        slidesToScroll: 1,
+      },
+    },
+  ],
+};
+
 const WeatherForm: FunctionComponent<WeatherFormProps> = ({
   changeTemperatureDegree,
   weekData,
   isLoading,
+  activeWeek,
   weatherData,
   configuration,
   headerSelected,
   temperatureUnit,
   onHeadSelected,
-  onWeekSelected
+  onWeekSelected,
 }) => {
   return (
     <Card>
@@ -124,51 +180,60 @@ const WeatherForm: FunctionComponent<WeatherFormProps> = ({
             </Col>
 
             <Col md={12} sm={12} lg={12}>
-              <ul className='d-flex flex-row justify-content-around weekly-wrap'>
-                {weekData && weekData.length > 0
-                  ? weekData.map((item: weekDataProps, key: number) => {
-                    return (
-                      <li key={key} className='list-unstyled weekly-item cursor-pointer' onClick={(e) => onWeekSelected(e, item)}>
-                        <div className='d-flex flex-column weekly-item-text'>
-                          <span>{item.name}</span>
-                          <span className='mt-1'>
-                            <img
-                              typeof='foaf:Image'
-                              className='img-responsive'
-                              src={`https://developer.accuweather.com/sites/default/files/${item.icon > 10 ? item.icon : '0' + item.icon
-                                }-s.png`}
-                              width='75'
-                              height='45'
-                              alt='Mostly Cloudy'
-                              title={item.iconPhrase}
-                            ></img>
-                          </span>
+              <div className='weekly-wrap'>
+                <Slider {...settings}>
+                  {weekData && weekData.length > 0
+                    ? weekData.map((item: weekDataProps, key: number) => {
+                      return (
+                        <div
+                          key={key}
+                          className={`list-unstyled weekly-item cursor-pointer ${key === activeWeek ? 'weekly-item-active' : null
+                            }`}
+                          onClick={(e) => onWeekSelected(e, key)}
+                        >
+                          <div className='d-flex flex-column weekly-item-text'>
+                            <span>{item.name}</span>
+                            <span className='m-auto'>
+                              <img
+                                typeof='foaf:Image'
+                                className='img-responsive'
+                                src={`https://developer.accuweather.com/sites/default/files/${item.icon > 10 ? item.icon : '0' + item.icon
+                                  }-s.png`}
+                                width='75'
+                                height='45'
+                                alt='Mostly Cloudy'
+                                title={item.iconPhrase}
+                              ></img>
+                            </span>
 
-                          <span className='mt-1 d-flex weekly-item-temperature'>
-                            <p className='weekly-item-temperature-day'>
-                              {temperatureUnit === 'F'
-                                ? item.temperature.maximum
-                                : Math.floor(
-                                  ((item.temperature.maximum - 32) * 5) / 9
-                                )}
-                                °
-                              </p>
+                            <span className='mt-1 d-flex weekly-item-temperature'>
+                              <p className='weekly-item-temperature-day'>
+                                {temperatureUnit === 'F'
+                                  ? item.temperature.maximum
+                                  : Math.floor(
+                                    ((item.temperature.maximum - 32) * 5) /
+                                    9
+                                  )}
+                                  °
+                                </p>
 
-                            <p className='weekly-item-temperature-night'>
-                              {temperatureUnit === 'F'
-                                ? item.temperature.minimum
-                                : Math.floor(
-                                  ((item.temperature.minimum - 32) * 5) / 9
-                                )}
-                                °
-                              </p>
-                          </span>
+                              <p className='weekly-item-temperature-night'>
+                                {temperatureUnit === 'F'
+                                  ? item.temperature.minimum
+                                  : Math.floor(
+                                    ((item.temperature.minimum - 32) * 5) /
+                                    9
+                                  )}
+                                  °
+                                </p>
+                            </span>
+                          </div>
                         </div>
-                      </li>
-                    );
-                  })
-                  : null}
-              </ul>
+                      );
+                    })
+                    : null}
+                </Slider>
+              </div>
             </Col>
           </Row>
         ) : (

@@ -114,6 +114,8 @@ body {
   white-space: nowrap;
   font-size: 12px;
   font-weight: normal;
+  margin-left: 40px;
+  margin-right: 40px;
 }
 
 .weekly-item {
@@ -126,7 +128,7 @@ body {
   text-align: center;
 }
 
-.weekly-item:first-child {
+.weekly-item-active {
   background-color: #f8f9fa;
 }
 
@@ -152,6 +154,8 @@ body {
 @media only screen and (max-width: 600px) {
   .weekly-wrap {
     font-size: 10px;
+    margin-left: 25px;
+    margin-right: 25px;
   }
   .weekly-wrap img {
     font-size: 10px;
@@ -233,4 +237,21 @@ body {
 
 .highcharts-credits {
   display: none !important  ;
+}
+
+.float-right {
+  float: right;
+}
+
+.slick-arrow-left {
+  bottom: 40px !important;
+}
+
+.slick-arrow-right {
+  top: -40px !important;
+}
+
+.slick-slider.slick-initialized {
+  display: flex !important;
+  align-items: center !important;
 }

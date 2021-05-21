@@ -66,7 +66,7 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 	const [configuration, setConfig] = useState<object>({});
 	const [headerSelected, setHeaderSelected] = useState<string>('T');
 	const [isLoading, setIsLoading] = useState<boolean>(true)
-
+	const [activeWeek, setActiveWeek] = useState<number>(0)
 
 	useEffect(() => {
 		getData();
@@ -139,6 +139,7 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 							},
 						});
 					}
+					weeklyDataArray.push(...weeklyDataArray)
 					setWeekData(weeklyDataArray);
 					setIsLoading(false)
 				}
@@ -210,6 +211,8 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 		setHeaderSelected(value);
 		var dates: any = [];
 		var temperature: any = [];
+		console.log('weatherData', weatherData);
+
 		for (let i = 0; i < weatherData.length; i++) {
 			dates.push(moment(weatherData[i].DateTime).format('hh A'));
 			if (value === 'P') {
@@ -267,8 +270,9 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 	Function to set the selected week data
 -----------------------------------------
 	*/
-	const onWeekSelected = (e: any, value: any) => {
-		console.log('week selected', value);
+	const onWeekSelected = (e: any, key: number) => {
+		console.log('week selected', key);
+		setActiveWeek(key)
 	}
 
 
@@ -277,6 +281,7 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 			<WeatherForm
 				weekData={weekData}
 				isLoading={isLoading}
+				activeWeek={activeWeek}
 				weatherData={weatherData}
 				configuration={configuration}
 				headerSelected={headerSelected}
