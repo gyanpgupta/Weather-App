@@ -12,7 +12,6 @@ var config: object | any = {
 		polar: true,
 		type: 'area',
 		height: 100,
-
 	},
 
 	title: {
@@ -27,36 +26,37 @@ var config: object | any = {
 	},
 
 	responsive: {
-		rules: [{
-			condition: {
-				maxWidth: 500
-			},
-			chartOptions: {
-				legend: {
-					align: 'center',
-					verticalAlign: 'bottom',
-					layout: 'horizontal'
+		rules: [
+			{
+				condition: {
+					maxWidth: 500,
 				},
-				yAxis: {
-					labels: {
-						align: 'left',
-						x: 0,
-						y: -5
+				chartOptions: {
+					legend: {
+						align: 'center',
+						verticalAlign: 'bottom',
+						layout: 'horizontal',
 					},
-					title: {
-						text: null
-					}
+					yAxis: {
+						labels: {
+							align: 'left',
+							x: 0,
+							y: -5,
+						},
+						title: {
+							text: null,
+						},
+					},
+					subtitle: {
+						text: null,
+					},
+					credits: {
+						enabled: false,
+					},
 				},
-				subtitle: {
-					text: null
-				},
-				credits: {
-					enabled: false
-				}
-			}
-		}]
-	}
-
+			},
+		],
+	},
 };
 
 const Weather: FunctionComponent<WeatherProps> = (props) => {
@@ -71,80 +71,81 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 	}, []);
 
 	/*
-	------------------------------------------------------------------
-		Function to get Data Weekly and Hourly data from weather APIs
-	-----------------------------------------------------------------
-	*/
+	  ------------------------------------------------------------------
+		  Function to get Data Weekly and Hourly data from weather APIs
+	  -----------------------------------------------------------------
+	  */
 	const getData = async () => {
 		// hourly data
 		await axios
-			.get(`${process.env.REACT_APP_HOURLY_API}`)
+			.get(`${process.env.REACT_APP_SERVER_URL}weather`)
 			.then(async (data) => {
-				setWeatherData(data.data);
-				var dates: any = [];
-				var temperature: any = [];
-				for (let i = 0; i < data.data.length; i++) {
-					dates.push(moment(data.data[i].DateTime).format('hh A')); // dates
-					temperature.push(data.data[i].Temperature.Value); // temperature in F
-				}
+				const { success, hourlyData, weeklyData } = data.data;
+				if (success) {
+					setWeatherData(hourlyData);
+					var dates: any = [];
+					var temperature: any = [];
+					for (let i = 0; i < hourlyData.length; i++) {
+						dates.push(moment(hourlyData[i].DateTime).format('hh A')); // dates
+						temperature.push(hourlyData[i].Temperature.Value); // temperature in F
+					}
 
-				// graph config
-				config = {
-					...config,
-					xAxis: {
-						name: 'Temperature °C',
-						categories: dates,
-						tickLength: 0,
-						lineWidth: 0,
-						minorGridLineWidth: 0,
-						lineColor: 'transparent',
-						minorTickLength: 0,
-					},
-					series: [
-						{
-							data: temperature,
-							name: 'Time Zone',
-							color: '#fff2ce',
-							lineColor: '#ffcf3c',
-							showInLegend: false,
-							marker: {
-								fillColor: '#f6ba01',
-								lineWidth: 2,
-								lineColor: '999',
-							},
+					// graph config
+					config = {
+						...config,
+						xAxis: {
+							name: 'Temperature °C',
+							categories: dates,
+							tickLength: 0,
+							lineWidth: 0,
+							minorGridLineWidth: 0,
+							lineColor: 'transparent',
+							minorTickLength: 0,
 						},
-					],
-				};
+						series: [
+							{
+								data: temperature,
+								name: 'Time Zone',
+								color: '#fff2ce',
+								lineColor: '#ffcf3c',
+								showInLegend: false,
+								marker: {
+									fillColor: '#f6ba01',
+									lineWidth: 2,
+									lineColor: '999',
+								},
+							},
+						],
+					};
 
-				setConfig(config);
+					setConfig(config);
 
-				// weekly data api
-				await axios.get(`${process.env.REACT_APP_WEEKLY_API}`).then((data) => {
-					const weeklyData: any = [];
-					for (let i = 0; i < data.data.DailyForecasts.length; i++) {
-						const date = moment(data.data.DailyForecasts[i].Date).format(
+					// weekly data api
+					const weeklyDataArray: any = [];
+					for (let i = 0; i < weeklyData.DailyForecasts.length; i++) {
+						const date = moment(weeklyData.DailyForecasts[i].Date).format(
 							'dddd'
 						);
-						weeklyData.push({
+						weeklyDataArray.push({
 							name: date, // week name
-							icon: data.data.DailyForecasts[i].Day.Icon, // icon number
-							iconPhrase: data.data.DailyForecasts[i].Day.IconPhrase, // phrase
+							icon: weeklyData.DailyForecasts[i].Day.Icon, // icon number
+							iconPhrase: weeklyData.DailyForecasts[i].Day.IconPhrase, // phrase
 							temperature: {
-								maximum: data.data.DailyForecasts[i].Temperature.Maximum.Value,
-								minimum: data.data.DailyForecasts[i].Temperature.Minimum.Value,
+								maximum: weeklyData.DailyForecasts[i].Temperature.Maximum.Value,
+								minimum: weeklyData.DailyForecasts[i].Temperature.Minimum.Value,
 							},
 						});
 					}
-					setWeekData(weeklyData);
-				});
+					setWeekData(weeklyDataArray);
+				}
 			});
 	};
 
 	/*
-	-----------------------------------------------
-		Function to update graph data in °F or °C
-	-----------------------------------------------
-	*/
+	  -----------------------------------------------
+		  Function to update graph data in °F or °C
+	  -----------------------------------------------
+	  */
 	const changeTemperatureDegree = (e: any, value: string) => {
 		setTemperatureUnit(value);
 
@@ -155,7 +156,9 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 
 			if (value === 'C') {
 				// if °C
-				temperature.push(Math.round(((weatherData[i].Temperature.Value - 32) * 5) / 9))
+				temperature.push(
+					Math.round(((weatherData[i].Temperature.Value - 32) * 5) / 9)
+				);
 			} else {
 				// else °F
 				temperature.push(weatherData[i].Temperature.Value);
@@ -188,7 +191,6 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 					},
 				},
 			],
-
 		};
 
 		setConfig(config);
@@ -207,8 +209,9 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 			} else {
 				if (temperatureUnit === 'C') {
 					// if °C
-					temperature.push(Math.round(((weatherData[i].Temperature.Value - 32) * 5) / 9))
-
+					temperature.push(
+						Math.round(((weatherData[i].Temperature.Value - 32) * 5) / 9)
+					);
 				} else {
 					// else °F
 					temperature.push(weatherData[i].Temperature.Value);
