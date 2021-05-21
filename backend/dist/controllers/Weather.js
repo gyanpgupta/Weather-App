@@ -39,9 +39,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
-var axios_1 = __importDefault(require("axios"));
 var redis_1 = __importDefault(require("redis"));
-// make a connection to the local instance of redis
+var axios_1 = __importDefault(require("axios"));
+/*
+---------------------------------------------------
+  Make a connection to the local instance of redis
+---------------------------------------------------
+*/
 var client = redis_1.default.createClient(6379);
 client.on('error', function (error) {
     console.error(error);
@@ -63,9 +67,7 @@ var list = function (req, res) { return __awaiter(_this, void 0, void 0, functio
                     switch (_b.label) {
                         case 0:
                             if (result) {
-                                console.log('result', result);
                                 _a = JSON.parse(result), hourlyData = _a.hourlyData, weeklyData = _a.weeklyData;
-                                console.log('hourly', weeklyData);
                                 return [2 /*return*/, res.status(200).json({
                                         responseCode: 200,
                                         success: true,
