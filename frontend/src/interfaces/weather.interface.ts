@@ -1,6 +1,7 @@
 export type WeatherFormProps = {
   changeTemperatureDegree: (e: any, value: string) => void;
   onHeadSelected: (e: any, value: string) => void;
+  onWeekSelected: (e: any, value: any) => void;
   weekData: any;
   isLoading: boolean;
   weatherData: any;

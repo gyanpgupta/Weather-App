@@ -73,10 +73,10 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 	}, []);
 
 	/*
-	  ------------------------------------------------------------------
-		  Function to get Data Weekly and Hourly data from weather APIs
-	  -----------------------------------------------------------------
-	  */
+	------------------------------------------------------------------
+		Function to get Data Weekly and Hourly data from weather APIs
+	-----------------------------------------------------------------
+	*/
 	const getData = async () => {
 		setIsLoading(true)
 		// hourly data
@@ -146,10 +146,10 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 	};
 
 	/*
-	  -----------------------------------------------
-		  Function to update graph data in °F or °C
-	  -----------------------------------------------
-	  */
+---------------------------------------------
+	Function to update graph data in °F or °C
+---------------------------------------------
+		*/
 	const changeTemperatureDegree = (e: any, value: string) => {
 		setTemperatureUnit(value);
 
@@ -200,6 +200,12 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 		setConfig(config);
 	};
 
+
+	/*
+--------------------------------------------------------------------
+	Function to update data for Temperature, Precipitation and Wind
+--------------------------------------------------------------------
+		*/
 	const onHeadSelected = (e: any, value: string) => {
 		setHeaderSelected(value);
 		var dates: any = [];
@@ -255,6 +261,17 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 		setConfig(config);
 	};
 
+
+	/*
+-----------------------------------------
+	Function to set the selected week data
+-----------------------------------------
+	*/
+	const onWeekSelected = (e: any, value: any) => {
+		console.log('week selected', value);
+	}
+
+
 	return (
 		<Container className='mt-2'>
 			<WeatherForm
@@ -264,6 +281,7 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 				configuration={configuration}
 				headerSelected={headerSelected}
 				onHeadSelected={onHeadSelected}
+				onWeekSelected={onWeekSelected}
 				temperatureUnit={temperatureUnit}
 				changeTemperatureDegree={changeTemperatureDegree}
 			/>

@@ -16,6 +16,7 @@ const WeatherForm: FunctionComponent<WeatherFormProps> = ({
   headerSelected,
   temperatureUnit,
   onHeadSelected,
+  onWeekSelected
 }) => {
   return (
     <Card>
@@ -127,7 +128,7 @@ const WeatherForm: FunctionComponent<WeatherFormProps> = ({
                 {weekData && weekData.length > 0
                   ? weekData.map((item: weekDataProps, key: number) => {
                     return (
-                      <li key={key} className='list-unstyled weekly-item'>
+                      <li key={key} className='list-unstyled weekly-item cursor-pointer' onClick={(e) => onWeekSelected(e, item)}>
                         <div className='d-flex flex-column weekly-item-text'>
                           <span>{item.name}</span>
                           <span className='mt-1'>
