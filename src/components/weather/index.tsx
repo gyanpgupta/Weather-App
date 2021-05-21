@@ -19,6 +19,13 @@ var config: object | any = {
 		text: '',
 	},
 
+	yAxis: {
+		gridLineWidth: 0,
+		minorGridLineWidth: 0,
+		tickLength: 0,
+		visible: false,
+	},
+
 	responsive: {
 		rules: [{
 			condition: {
@@ -64,10 +71,10 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 	}, []);
 
 	/*
-				------------------------------------------------------------------
-						Function to get Data Weekly and Hourly data from weather APIs
-				-----------------------------------------------------------------
-				*/
+	------------------------------------------------------------------
+		Function to get Data Weekly and Hourly data from weather APIs
+	-----------------------------------------------------------------
+	*/
 	const getData = async () => {
 		// hourly data
 		await axios
@@ -88,6 +95,10 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 						name: 'Temperature °C',
 						categories: dates,
 						tickLength: 0,
+						lineWidth: 0,
+						minorGridLineWidth: 0,
+						lineColor: 'transparent',
+						minorTickLength: 0,
 					},
 					series: [
 						{
@@ -96,7 +107,6 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 							color: '#fff2ce',
 							lineColor: '#ffcf3c',
 							showInLegend: false,
-
 							marker: {
 								fillColor: '#f6ba01',
 								lineWidth: 2,
@@ -104,12 +114,6 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 							},
 						},
 					],
-					yAxis: {
-						gridLineWidth: 0,
-						minorGridLineWidth: 0,
-						tickLength: 0,
-						visible: false,
-					},
 				};
 
 				setConfig(config);
@@ -137,12 +141,13 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 	};
 
 	/*
-				-----------------------------------------------
-						Function to update graph data in °F or °C
-				-----------------------------------------------
-				*/
+	-----------------------------------------------
+		Function to update graph data in °F or °C
+	-----------------------------------------------
+	*/
 	const changeTemperatureDegree = (e: any, value: string) => {
 		setTemperatureUnit(value);
+
 		var dates: any = [];
 		var temperature: any = [];
 		for (let i = 0; i < weatherData.length; i++) {
@@ -150,15 +155,12 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 
 			if (value === 'C') {
 				// if °C
-				Math.floor(
-					temperature.push(((weatherData[i].Temperature.Value - 32) * 5) / 9)
-				);
+				temperature.push(Math.round(((weatherData[i].Temperature.Value - 32) * 5) / 9))
 			} else {
 				// else °F
 				temperature.push(weatherData[i].Temperature.Value);
 			}
 		}
-
 		// update graph config
 
 		config = {
@@ -167,22 +169,26 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 				name: 'Temperature °C',
 				categories: dates,
 				tickLength: 0,
+				lineWidth: 0,
+				minorGridLineWidth: 0,
+				lineColor: 'transparent',
+				minorTickLength: 0,
 			},
 			series: [
 				{
 					data: temperature,
-					name: 'Time Zone',
+					name: `Temperature °${value}`,
 					color: '#fff2ce',
 					lineColor: '#ffcf3c',
 					showInLegend: false,
+					marker: {
+						fillColor: '#f6ba01',
+						lineWidth: 2,
+						lineColor: '999',
+					},
 				},
 			],
-			yAxis: {
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				tickLength: 0,
-				visible: false,
-			},
+
 		};
 
 		setConfig(config);
@@ -201,9 +207,8 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 			} else {
 				if (temperatureUnit === 'C') {
 					// if °C
-					Math.floor(
-						temperature.push(((weatherData[i].Temperature.Value - 32) * 5) / 9)
-					);
+					temperature.push(Math.round(((weatherData[i].Temperature.Value - 32) * 5) / 9))
+
 				} else {
 					// else °F
 					temperature.push(weatherData[i].Temperature.Value);
@@ -219,6 +224,10 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 				name: 'Temperature °C',
 				categories: dates,
 				tickLength: 0,
+				lineWidth: 0,
+				minorGridLineWidth: 0,
+				lineColor: 'transparent',
+				minorTickLength: 0,
 			},
 			series: [
 				{
@@ -227,14 +236,13 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 					color: '#fff2ce',
 					lineColor: '#ffcf3c',
 					showInLegend: false,
+					marker: {
+						fillColor: '#f6ba01',
+						lineWidth: 2,
+						lineColor: '999',
+					},
 				},
 			],
-			yAxis: {
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				tickLength: 0,
-				visible: false,
-			},
 		};
 
 		setConfig(config);

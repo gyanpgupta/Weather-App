@@ -230,3 +230,7 @@ body {
 .card {
   margin: 0 auto;
 }
+
+.highcharts-credits {
+  display: none !important  ;
+}
