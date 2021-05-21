@@ -40,63 +40,95 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
+var redis_1 = __importDefault(require("redis"));
+// make a connection to the local instance of redis
+var client = redis_1.default.createClient(6379);
+client.on('error', function (error) {
+    console.error(error);
+});
 /*
 ---------------------------------
   API to fetch Weather's record
 ---------------------------------
 */
 var list = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-    var error_1;
     var _this = this;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, axios_1.default
-                        .get("" + process.env.HOURLY_API)
-                        .then(function (response) { return __awaiter(_this, void 0, void 0, function () {
-                        var _this = this;
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0: return [4 /*yield*/, axios_1.default
-                                        .get("" + process.env.WEEKLY_API)
-                                        .then(function (result) { return __awaiter(_this, void 0, void 0, function () {
-                                        return __generator(this, function (_a) {
-                                            return [2 /*return*/, res.status(200).json({
-                                                    responseCode: 200,
-                                                    success: true,
-                                                    message: 'Weather data fetched successfully',
-                                                    hourlyData: response.data,
-                                                    weeklyData: result.data,
-                                                })];
-                                        });
-                                    }); })
-                                        .catch(function (error) {
-                                        return res.status(500).json({
-                                            error: error.message,
-                                        });
+        try {
+            // Check the redis store for the data first
+            client.get('weather', function (err, result) { return __awaiter(_this, void 0, void 0, function () {
+                var _a, hourlyData, weeklyData;
+                var _this = this;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            if (result) {
+                                console.log('result', result);
+                                _a = JSON.parse(result), hourlyData = _a.hourlyData, weeklyData = _a.weeklyData;
+                                console.log('hourly', weeklyData);
+                                return [2 /*return*/, res.status(200).json({
+                                        responseCode: 200,
+                                        success: true,
+                                        message: 'Weather data fetched successfully',
+                                        hourlyData: hourlyData,
+                                        weeklyData: weeklyData,
                                     })];
-                                case 1:
-                                    _a.sent();
-                                    return [2 /*return*/];
                             }
-                        });
-                    }); })
-                        .catch(function (error) {
-                        return res.status(500).json({
-                            error: error.message,
-                        });
-                    })];
-            case 1:
-                _a.sent();
-                return [3 /*break*/, 3];
-            case 2:
-                error_1 = _a.sent();
-                return [2 /*return*/, res.status(500).json({
-                        error: error_1.message,
-                    })];
-            case 3: return [2 /*return*/];
+                            return [4 /*yield*/, axios_1.default
+                                    .get("" + process.env.HOURLY_API)
+                                    .then(function (response) { return __awaiter(_this, void 0, void 0, function () {
+                                    var _this = this;
+                                    return __generator(this, function (_a) {
+                                        switch (_a.label) {
+                                            case 0: return [4 /*yield*/, axios_1.default
+                                                    .get("" + process.env.WEEKLY_API)
+                                                    .then(function (result) { return __awaiter(_this, void 0, void 0, function () {
+                                                    var cacheData;
+                                                    return __generator(this, function (_a) {
+                                                        cacheData = {
+                                                            hourlyData: response.data,
+                                                            weeklyData: result.data,
+                                                        };
+                                                        // save the record in the cache for subsequent request
+                                                        client.setex('weather', 1440, JSON.stringify(cacheData));
+                                                        return [2 /*return*/, res.status(200).json({
+                                                                responseCode: 200,
+                                                                success: true,
+                                                                message: 'Weather data fetched successfully',
+                                                                hourlyData: response.data,
+                                                                weeklyData: result.data,
+                                                            })];
+                                                    });
+                                                }); })
+                                                    .catch(function (error) {
+                                                    return res.status(500).json({
+                                                        error: error.message,
+                                                    });
+                                                })];
+                                            case 1:
+                                                _a.sent();
+                                                return [2 /*return*/];
+                                        }
+                                    });
+                                }); })
+                                    .catch(function (error) {
+                                    return res.status(500).json({
+                                        error: error.message,
+                                    });
+                                })];
+                        case 1:
+                            _b.sent();
+                            return [2 /*return*/];
+                    }
+                });
+            }); });
         }
+        catch (error) {
+            return [2 /*return*/, res.status(500).json({
+                    error: error.message,
+                })];
+        }
+        return [2 /*return*/];
     });
 }); };
 exports.default = { list: list };
