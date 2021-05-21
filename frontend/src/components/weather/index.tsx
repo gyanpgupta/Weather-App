@@ -65,6 +65,8 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 	const [weekData, setWeekData] = useState<object>([]);
 	const [configuration, setConfig] = useState<object>({});
 	const [headerSelected, setHeaderSelected] = useState<string>('T');
+	const [isLoading, setIsLoading] = useState<boolean>(true)
+
 
 	useEffect(() => {
 		getData();
@@ -76,6 +78,7 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 	  -----------------------------------------------------------------
 	  */
 	const getData = async () => {
+		setIsLoading(true)
 		// hourly data
 		await axios
 			.get(`${process.env.REACT_APP_SERVER_URL}weather`)
@@ -137,6 +140,7 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 						});
 					}
 					setWeekData(weeklyDataArray);
+					setIsLoading(false)
 				}
 			});
 	};
@@ -255,6 +259,7 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 		<Container className='mt-2'>
 			<WeatherForm
 				weekData={weekData}
+				isLoading={isLoading}
 				weatherData={weatherData}
 				configuration={configuration}
 				headerSelected={headerSelected}

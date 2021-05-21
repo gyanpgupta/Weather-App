@@ -1,5 +1,6 @@
 import { FunctionComponent } from 'react';
 import { Card, CardBody, Col, Row } from 'reactstrap';
+import Skeleton from 'react-loading-skeleton';
 import moment from 'moment';
 
 import { WeatherFormProps, weekDataProps } from '../../interfaces';
@@ -9,6 +10,7 @@ const ReactHighcharts = require('react-highcharts');
 const WeatherForm: FunctionComponent<WeatherFormProps> = ({
   changeTemperatureDegree,
   weekData,
+  isLoading,
   weatherData,
   configuration,
   headerSelected,
@@ -18,7 +20,9 @@ const WeatherForm: FunctionComponent<WeatherFormProps> = ({
   return (
     <Card>
       <CardBody>
-        {weatherData && weatherData[0] ? (
+        {isLoading ? (
+          <Skeleton count={6} /> // Five-line loading skeleton
+        ) : weatherData && weatherData[0] ? (
           <Row>
             <Col md={3} sm={4} lg={4} xs={12}>
               <>
@@ -28,8 +32,8 @@ const WeatherForm: FunctionComponent<WeatherFormProps> = ({
                       typeof='foaf:Image'
                       className='img-responsive'
                       src={`https://developer.accuweather.com/sites/default/files/${weatherData && weatherData[0].WeatherIcon > 10
-                          ? weatherData[0].WeatherIcon
-                          : '0' + weatherData[0].WeatherIcon
+                        ? weatherData[0].WeatherIcon
+                        : '0' + weatherData[0].WeatherIcon
                         }-s.png`}
                       width='75'
                       height='45'
@@ -166,7 +170,9 @@ const WeatherForm: FunctionComponent<WeatherFormProps> = ({
               </ul>
             </Col>
           </Row>
-        ) : null}
+        ) : (
+          <h6>No data found</h6>
+        )}
       </CardBody>
     </Card>
   );

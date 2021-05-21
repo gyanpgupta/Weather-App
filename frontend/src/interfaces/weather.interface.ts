@@ -1,9 +1,8 @@
-import { type } from 'os';
-
 export type WeatherFormProps = {
   changeTemperatureDegree: (e: any, value: string) => void;
   onHeadSelected: (e: any, value: string) => void;
   weekData: any;
+  isLoading: boolean;
   weatherData: any;
   configuration: any;
   headerSelected: string;
