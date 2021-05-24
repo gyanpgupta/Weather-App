@@ -255,3 +255,13 @@ body {
   display: flex !important;
   align-items: center !important;
 }
+
+/* -------------------------- CSSS------------ */
+
+.highcharts-axis-title {
+  display: none !important;
+}
+
+.highcharts-yaxis-labels text {
+  display: none !important;
+}
