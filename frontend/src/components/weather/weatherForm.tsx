@@ -9,7 +9,7 @@ import { WeatherFormProps, weekDataProps } from '../../interfaces';
 const ReactHighcharts = require('react-highcharts');
 
 function SampleNextArrow(props: any) {
-  const { className, style, onClick } = props;
+  const { style, onClick } = props;
   return (
     <span
       className={
@@ -22,7 +22,7 @@ function SampleNextArrow(props: any) {
 }
 
 function SamplePrevArrow(props: any) {
-  const { className, style, onClick } = props;
+  const { style, onClick } = props;
   return (
     <span
       className={'slick-arrow-left fa fa-chevron-left cursor-pointer'}

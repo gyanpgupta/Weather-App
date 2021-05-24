@@ -60,13 +60,14 @@ var list = function (req, res) { return __awaiter(_this, void 0, void 0, functio
     return __generator(this, function (_a) {
         try {
             // Check the redis store for the data first
-            client.get('weather', function (err, result) { return __awaiter(_this, void 0, void 0, function () {
+            client.get('weather-france', function (err, result) { return __awaiter(_this, void 0, void 0, function () {
                 var _a, hourlyData, weeklyData;
                 var _this = this;
                 return __generator(this, function (_b) {
                     switch (_b.label) {
                         case 0:
                             if (result) {
+                                console.log('result cache');
                                 _a = JSON.parse(result), hourlyData = _a.hourlyData, weeklyData = _a.weeklyData;
                                 return [2 /*return*/, res.status(200).json({
                                         responseCode: 200,
@@ -76,6 +77,7 @@ var list = function (req, res) { return __awaiter(_this, void 0, void 0, functio
                                         weeklyData: weeklyData,
                                     })];
                             }
+                            console.log('without cache');
                             return [4 /*yield*/, axios_1.default
                                     .get("" + process.env.HOURLY_API)
                                     .then(function (response) { return __awaiter(_this, void 0, void 0, function () {
@@ -92,7 +94,7 @@ var list = function (req, res) { return __awaiter(_this, void 0, void 0, functio
                                                             weeklyData: result.data,
                                                         };
                                                         // save the record in the cache for subsequent request
-                                                        client.setex('weather', 1440, JSON.stringify(cacheData));
+                                                        client.setex('weather-france', 1440, JSON.stringify(cacheData));
                                                         return [2 /*return*/, res.status(200).json({
                                                                 responseCode: 200,
                                                                 success: true,
