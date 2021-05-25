@@ -22,7 +22,7 @@ client.on('error', (error: any) => {
 const list: any = async (req: express.Request, res: express.Response) => {
   try {
     // Check the redis store for the data first
-    client.get('weather-france', async (err: any, result: any) => {
+    client.get('weather-paris-france', async (err: any, result: any) => {
       if (result) {
         console.log('result cache');
 
@@ -49,7 +49,11 @@ const list: any = async (req: express.Request, res: express.Response) => {
               };
 
               // save the record in the cache for subsequent request
-              client.setex('weather-france', 1440, JSON.stringify(cacheData));
+              client.setex(
+                'weather-paris-france',
+                1440,
+                JSON.stringify(cacheData)
+              );
 
               return res.status(200).json({
                 responseCode: 200,

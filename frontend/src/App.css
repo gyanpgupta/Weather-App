@@ -233,6 +233,7 @@ body {
 
 .card {
   margin: 0 auto;
+  border-radius: 25px !important;
 }
 
 .highcharts-credits {

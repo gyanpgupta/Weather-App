@@ -293,10 +293,12 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 		setHeaderSelected(value);
 		var dates: any = [];
 		var temperature: any = [];
+		var PrecipitationDummyValue: any = []
 		for (let i = 0; i < weatherData.length; i++) {
 			dates.push(moment(weatherData[i].DateTime).format('hh A'));
 			if (value === 'P') {
 				temperature.push(weatherData[i].PrecipitationProbability);
+				PrecipitationDummyValue.push(weatherData[i].PrecipitationProbability > 0 ? 1 : null)
 			} else if (value === 'W') {
 				temperature.push(weatherData[i].Wind.Speed.Value);
 			} else {
@@ -325,6 +327,14 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 					minorTickLength: 0,
 				},
 				series: [
+					{
+						name: '',
+						data: PrecipitationDummyValue,
+						enableMouseTracking: false,
+						showInLegend: false,
+						color: '#1a73e8'
+
+					},
 					{
 						data: temperature,
 						name: 'Precipitation',

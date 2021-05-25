@@ -60,7 +60,7 @@ var list = function (req, res) { return __awaiter(_this, void 0, void 0, functio
     return __generator(this, function (_a) {
         try {
             // Check the redis store for the data first
-            client.get('weather-france', function (err, result) { return __awaiter(_this, void 0, void 0, function () {
+            client.get('weather-paris-france', function (err, result) { return __awaiter(_this, void 0, void 0, function () {
                 var _a, hourlyData, weeklyData;
                 var _this = this;
                 return __generator(this, function (_b) {
@@ -94,7 +94,7 @@ var list = function (req, res) { return __awaiter(_this, void 0, void 0, functio
                                                             weeklyData: result.data,
                                                         };
                                                         // save the record in the cache for subsequent request
-                                                        client.setex('weather-france', 1440, JSON.stringify(cacheData));
+                                                        client.setex('weather-paris-france', 1440, JSON.stringify(cacheData));
                                                         return [2 /*return*/, res.status(200).json({
                                                                 responseCode: 200,
                                                                 success: true,
