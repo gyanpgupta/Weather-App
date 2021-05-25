@@ -3,8 +3,8 @@ import { Card, CardBody, Col, Row } from 'reactstrap';
 import Skeleton from 'react-loading-skeleton';
 import moment from 'moment';
 import Slider from 'react-slick';
-
-import { WeatherFormProps, weekDataProps } from '../../interfaces';
+import wind_unselectedIcon from './../../assets/wind_unselected.svg';
+import { WeatherFormProps, weekDataProps, windDataProps } from '../../interfaces';
 
 const ReactHighcharts = require('react-highcharts');
 
@@ -64,6 +64,7 @@ const settings: any = {
 
 const WeatherForm: FunctionComponent<WeatherFormProps> = ({
   changeTemperatureDegree,
+  windData,
   weekData,
   isLoading,
   activeWeek,
@@ -176,7 +177,41 @@ const WeatherForm: FunctionComponent<WeatherFormProps> = ({
                   Wind
                 </span>
               </div>
-              <ReactHighcharts config={configuration} />
+              {headerSelected === 'W' ? (
+                <div className='wind-wrap'>
+                  {windData && windData.length > 0
+                    ? windData.map((item: windDataProps, key: number) => {
+                      return (
+                        <div key={key} className={`cursor-pointer`}>
+                          <div className='d-flex flex-column'>
+                            <span className='wind-speed'>
+                              {item.speed} {item.unit}
+                            </span>
+                            <span className='m-auto mt-1 mb-1'>
+                              <img
+                                typeof='foaf:Image'
+                                className='img-responsive'
+                                src={wind_unselectedIcon}
+                                width='25'
+                                height='25'
+                                alt='8 km/h From southwest'
+                                data-atf='0'
+                                style={{
+                                  transform: `rotate(${item.degree}deg)`,
+                                }}
+                              />
+                            </span>
+                            <span className='wind-time'>{item.date}</span>
+                          </div>
+                        </div>
+                      );
+                    })
+                    : null}
+                </div>
+              ) : (
+                <ReactHighcharts config={configuration} />
+              )}
+
             </Col>
 
             <Col md={12} sm={12} lg={12}>

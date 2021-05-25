@@ -150,16 +150,16 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 	const [headerSelected, setHeaderSelected] = useState<string>('T');
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [activeWeek, setActiveWeek] = useState<number>(0);
-
+	const [windData, setWindData] = useState([]);
 	useEffect(() => {
 		getData();
 	}, []);
 
 	/*
-	  ------------------------------------------------------------------
-		  Function to get Data Weekly and Hourly data from weather APIs
-	  -----------------------------------------------------------------
-	  */
+		------------------------------------------------------------------
+			Function to get Data Weekly and Hourly data from weather APIs
+		-----------------------------------------------------------------
+		*/
 	const getData = async () => {
 		setIsLoading(true);
 		// hourly data
@@ -230,10 +230,10 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 	};
 
 	/*
-  ---------------------------------------------
-	  Function to update graph data in °F or °C
-  ---------------------------------------------
-		  */
+	---------------------------------------------
+		Function to update graph data in °F or °C
+	---------------------------------------------
+			*/
 	const changeTemperatureDegree = (e: any, value: string) => {
 		setTemperatureUnit(value);
 
@@ -285,22 +285,30 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 	};
 
 	/*
-  --------------------------------------------------------------------
-	  Function to update data for Temperature, Precipitation and Wind
-  --------------------------------------------------------------------
-		  */
+	--------------------------------------------------------------------
+		Function to update data for Temperature, Precipitation and Wind
+	--------------------------------------------------------------------
+			*/
 	const onHeadSelected = (e: any, value: string) => {
 		setHeaderSelected(value);
 		var dates: any = [];
 		var temperature: any = [];
-		var PrecipitationDummyValue: any = []
+		var PrecipitationDummyValue: any = [];
+		var windArray: any = [];
 		for (let i = 0; i < weatherData.length; i++) {
 			dates.push(moment(weatherData[i].DateTime).format('hh A'));
 			if (value === 'P') {
 				temperature.push(weatherData[i].PrecipitationProbability);
-				PrecipitationDummyValue.push(weatherData[i].PrecipitationProbability > 0 ? 1 : null)
+				PrecipitationDummyValue.push(
+					weatherData[i].PrecipitationProbability > 0 ? 1 : null
+				);
 			} else if (value === 'W') {
-				temperature.push(weatherData[i].Wind.Speed.Value);
+				windArray.push({
+					date: moment(weatherData[i].DateTime).format('hh A'),
+					speed: weatherData[i].Wind.Speed.Value,
+					degree: weatherData[i].Wind.Direction.Degrees,
+					unit: weatherData[i].Wind.Speed.Unit
+				});
 			} else {
 				if (temperatureUnit === 'C') {
 					// if °C
@@ -332,8 +340,7 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 						data: PrecipitationDummyValue,
 						enableMouseTracking: false,
 						showInLegend: false,
-						color: '#1a73e8'
-
+						color: '#1a73e8',
 					},
 					{
 						data: temperature,
@@ -350,6 +357,8 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 				],
 			};
 			setConfig(barConfig);
+		} else if (value === 'W') {
+			setWindData(windArray)
 		} else {
 			config = {
 				...config,
@@ -383,10 +392,10 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 	};
 
 	/*
-  -----------------------------------------
-	  Function to set the selected week data
-  -----------------------------------------
-	  */
+	-----------------------------------------
+		Function to set the selected week data
+	-----------------------------------------
+		*/
 	const onWeekSelected = (e: any, key: number) => {
 		console.log('week selected', key);
 		setActiveWeek(key);
@@ -395,6 +404,7 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 	return (
 		<Container className='mt-2'>
 			<WeatherForm
+				windData={windData}
 				weekData={weekData}
 				isLoading={isLoading}
 				activeWeek={activeWeek}
