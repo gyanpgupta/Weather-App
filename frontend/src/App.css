@@ -70,12 +70,36 @@ body {
 .headline {
   font-size: 14px;
   line-height: 1.58;
+  margin-bottom: 12px;
+}
+
+.headline button {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  border-radius: 100px;
+  color: black;
+}
+
+.headline button:hover {
+  background: #fff;
+  color: black;
+  border-color: #f7f7fc;
 }
 
 .headline-active {
-  border-bottom: 3px solid #fbbc04;
-  cursor: default;
-  padding-bottom: 4px;
+  cursor: default !important;
+  /* padding-bottom: 4px; */
+
+  background: #4a72f5 !important;
+  border-radius: 100px;
+  color: #ffffff !important;
+}
+
+.headline-active:hover {
+  background: #4168eb !important;
+  color: #ffffff !important;
+  border-color: #f7f7fc !important;
 }
 
 .temperature-unit {
@@ -126,10 +150,11 @@ body {
   height: 90px;
   line-height: 1;
   text-align: center;
+  max-width: fit-content;
 }
 
 .weekly-item-active {
-  background-color: #f8f9fa;
+  background-color: #f7f7fc;
 }
 
 .weekly-item-text {
@@ -192,6 +217,10 @@ body {
   }
   .headline {
     font-size: 9px;
+    margin-top: 9px;
+  }
+  .headline button {
+    font-size: 9px;
   }
 
   .wind-wrap img {
@@ -211,6 +240,14 @@ body {
     display: inline-block;
     font-size: 9px !important;
     color: #bababa;
+  }
+
+  .location-name {
+    font-size: 16px !important;
+    line-height: 18px !important;
+  }
+  .weekly-item-text span {
+    font-size: 10px;
   }
 }
 
@@ -311,4 +348,19 @@ body {
   display: inline-block;
   font-size: 12px;
   color: #bababa;
+}
+.validation-error {
+  font-size: 12px;
+  color: #dd3333;
+}
+.form-group {
+  display: inline-flex;
+}
+
+.location-name {
+  line-height: 32px;
+  vertical-align: top;
+  font-size: 22px;
+  color: #222;
+  font-family: Google Sans, arial, sans-serif !important;
 }

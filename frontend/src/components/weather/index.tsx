@@ -148,26 +148,28 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 	const [weekData, setWeekData] = useState<object>([]);
 	const [configuration, setConfig] = useState<object>({});
 	const [headerSelected, setHeaderSelected] = useState<string>('T');
-	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [activeWeek, setActiveWeek] = useState<number>(0);
 	const [windData, setWindData] = useState([]);
-	useEffect(() => {
-		getData();
-	}, []);
+	const [weatherSearch, setWeatherSearch] = useState<string>('');
+	const [error, setError] = useState<string>('');
+	const [locationName, setLocationName] = useState<string>('');
+	const [isData, SetIsData] = useState<boolean>(false)
 
 	/*
 		------------------------------------------------------------------
 			Function to get Data Weekly and Hourly data from weather APIs
 		-----------------------------------------------------------------
 		*/
-	const getData = async () => {
+	const getData = async (value: string | number) => {
 		setIsLoading(true);
 		// hourly data
 		await axios
-			.get(`${process.env.REACT_APP_SERVER_URL}weather`)
+			.get(`${process.env.REACT_APP_SERVER_URL}weather?searchValue=${value}`)
 			.then(async (data) => {
-				const { success, hourlyData, weeklyData } = data.data;
+				const { success, hourlyData, weeklyData, localizedName } = data.data;
 				if (success) {
+					setLocationName(localizedName);
 					setWeatherData(hourlyData);
 					var dates: any = [];
 					var temperature: any = [];
@@ -307,7 +309,7 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 					date: moment(weatherData[i].DateTime).format('hh A'),
 					speed: weatherData[i].Wind.Speed.Value,
 					degree: weatherData[i].Wind.Direction.Degrees,
-					unit: weatherData[i].Wind.Speed.Unit
+					unit: weatherData[i].Wind.Speed.Unit,
 				});
 			} else {
 				if (temperatureUnit === 'C') {
@@ -358,7 +360,7 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 			};
 			setConfig(barConfig);
 		} else if (value === 'W') {
-			setWindData(windArray)
+			setWindData(windArray);
 		} else {
 			config = {
 				...config,
@@ -401,9 +403,40 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 		setActiveWeek(key);
 	};
 
+	const onInputChange = (e: any) => {
+		const {
+			target: { value },
+		} = e;
+		setWeatherSearch(value);
+		setError('');
+	};
+
+	/*
+	--------------------------
+		For Searching
+	 ---------------------------
+	 */
+	const onSubmit = async (e: any) => {
+		e.preventDefault();
+		try {
+			if (weatherSearch != '') {
+				setError('');
+				setHeaderSelected('T')
+				SetIsData(true)
+				await getData(weatherSearch);
+			} else {
+				setError('Please enter a text');
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<Container className='mt-2'>
 			<WeatherForm
+				isData={isData}
+				error={error}
 				windData={windData}
 				weekData={weekData}
 				isLoading={isLoading}
@@ -411,6 +444,10 @@ const Weather: FunctionComponent<WeatherProps> = (props) => {
 				weatherData={weatherData}
 				configuration={configuration}
 				headerSelected={headerSelected}
+				weatherSearch={weatherSearch}
+				locationName={locationName}
+				onSubmit={onSubmit}
+				onInputChange={onInputChange}
 				onHeadSelected={onHeadSelected}
 				onWeekSelected={onWeekSelected}
 				temperatureUnit={temperatureUnit}
